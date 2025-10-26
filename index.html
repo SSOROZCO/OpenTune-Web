@@ -1259,8 +1259,154 @@
                 transition-duration: 0.01ms !important;
             }
         }
-    </style>
+        /* === ZK-REATIONS RUBBER-BAND + BURBUJA === */
+.zk-rubber-back {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 9999;
+  font-family: system-ui, -apple-system, sans-serif;
+}
 
+.zk-rubber-btn {
+  --scale: 1;
+  --x: 0;
+  --y: 0;
+  
+  width: 48px;
+  height: 48px;
+  background: #fff;
+  color: #0d47a1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: 
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: visible;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Efecto rubber-band */
+.zk-rubber-btn:active {
+  --scale: 0.88;
+  --x: -1px;
+  --y: 1px;
+  transform: translate(var(--x), var(--y)) scale(var(--scale));
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.1s ease;
+}
+
+/* Hover (desktop) */
+@media (hover: hover) and (pointer: fine) {
+  .zk-rubber-btn:hover {
+    --scale: 1.08;
+    transform: scale(var(--scale));
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+  }
+}
+
+/* Ícono animado */
+.zk-arrow {
+  transition: transform 0.3s ease;
+}
+.zk-rubber-btn:hover .zk-arrow,
+.zk-rubber-btn:focus-visible .zk-arrow {
+  transform: translateX(-1.5px);
+}
+
+/* === NUEVA BURBUJA "Volver" === */
+.zk-rubber-btn::before {
+  content: "Volver al blog";
+  position: absolute;
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.85) translateY(6px);
+  background: #fff;
+  color: #0d47a1;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+  letter-spacing: -0.1px;
+  z-index: 1;
+}
+
+/* Flecha de la burbuja */
+.zk-rubber-btn::after {
+  content: "";
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #fff;
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+/* Mostrar burbuja en hover o focus */
+@media (hover: hover) and (pointer: fine) {
+  .zk-rubber-btn:hover::before,
+  .zk-rubber-btn:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+}
+
+.zk-rubber-btn:focus-visible::before,
+.zk-rubber-btn:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1) translateY(0);
+}
+
+/* Focus accesible */
+.zk-rubber-btn:focus-visible {
+  outline: 2px solid #0d47a1;
+  outline-offset: 3px;
+}
+
+/* Móvil: botón más grande, sin burbuja */
+@media (max-width: 768px) {
+  .zk-rubber-back { bottom: 16px; left: 16px; }
+  .zk-rubber-btn { width: 56px; height: 56px; }
+  .zk-rubber-btn .zk-arrow { width: 22px; height: 22px; }
+  .zk-rubber-btn::before,
+  .zk-rubber-btn::after { display: none; }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .zk-rubber-btn,
+  .zk-rubber-btn * {
+    transition-duration: 0.01ms !important;
+  }
+}
+    </style>
+<div class="zk-rubber-back">
+  <a href="https://songstraducidas-oss.blogspot.com/" 
+     class="zk-rubber-btn" 
+     aria-label="Volver al blog">
+    <svg class="zk-arrow" viewBox="0 0 24 24" width="20" height="20">
+      <path d="M15 18L9 12L15 6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
     <!-- Theme Toggle Script -->
 
 </body>
